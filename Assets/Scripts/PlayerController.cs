@@ -15,7 +15,10 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 10.0f;
     public float gravity = -9.81f;
     public GameObject projectilePrefab;
-
+    
+    private bool standing_check = false;
+    private float standing_gap = .1f;
+    private float saved_time_stand = 0;
 
     private CharacterController controller;
 
@@ -51,11 +54,13 @@ public class PlayerController : MonoBehaviour
             max_vel = 20;
             max_accel = 20;
             walk_gap = .25f;
+            jumpHeight = 20f;
         }
         else {
             max_vel = 10;
             max_accel = 10;
             walk_gap = .5f;
+            jumpHeight = 10f;
         }
         // Up and Down Movement
         float input_horizontal = 0;
@@ -115,6 +120,7 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0, rotate, 0);
         if (jumps > 0 && Input.GetButtonDown("Jump"))
         {
+            standing_check = false;
             Debug.Log("jump");
             if (jumps == 2)
                 audio.PlayOneShot(jump1, .7f);
@@ -126,14 +132,19 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) {
             GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
         }
-
+        if (vel_y.y < -.1)
+            standing_check = false;
         // Apply gravity
-        if (controller.isGrounded)
-            jumps = 2;
+        if (standing_check == false && vel_y.y < .00000001 && vel_y.y > -.00000001) {
+            standing_check = true;
+            saved_time_stand = Time.time;
+        }
         vel_y.y += gravity * Time.deltaTime;
         controller.Move(vel_y * Time.deltaTime);
-        if (controller.isGrounded == true)
+        if (controller.isGrounded == true || (standing_check == true && Time.time - saved_time_walk > standing_gap)) {
             vel_y.y = 0;
+            jumps = 2;
+        }
     }
 }
 /*
