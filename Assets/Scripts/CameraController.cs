@@ -45,9 +45,6 @@ public class CameraController : MonoBehaviour
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
         // transform.position = target.position + offset;
-
-        if (!Input.GetKey(KeyCode.Z)) {
-            transform.LookAt(target);
-        }
+        transform.LookAt(target);
     }
 }

@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
             jumps -= 1;
             vel_y.y = Mathf.Sqrt(-jumpHeight * gravity);
         }
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Z)) {
             GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
         }
         if (vel_y.y < -.1)
