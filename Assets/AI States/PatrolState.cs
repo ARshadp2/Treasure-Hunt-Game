@@ -6,6 +6,7 @@ public class PatrolState : State
 {
     public ChaseState chaseState;
     public Transform player; // Reference to the player
+    public GameObject AI;
     public List<Transform> waypoints;
     public float speed = 2f;
     public float detectionDistance = 10f; 
@@ -51,8 +52,8 @@ public class PatrolState : State
 
         // Raycast to detect walls or obstacles
         RaycastHit hit;
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        if (Physics.Raycast(transform.position, forward, out hit, detectionDistance))
+        Vector3 forward = AI.transform.TransformDirection(Vector3.forward);
+        if (Physics.Raycast(AI.transform.position, forward, out hit, detectionDistance))
         {
             if (hit.collider.CompareTag("Wall"))
             {
@@ -61,10 +62,10 @@ public class PatrolState : State
         }
 
         // Debug log to track the AI's patrol progress
-        Debug.Log($"Current Position: {transform.position}, Target Position: {targetPosition}");
+        Debug.Log($"Current Position: {AI.transform.position}, Target Position: {targetPosition}");
 
         // If the AI reaches the current waypoint, select the next one
-        if (Vector3.Distance(transform.position, targetPosition) < 0.5f)
+        if (Vector3.Distance(AI.transform.position, targetPosition) < 0.5f)
         {
             SelectNextWaypoint();
         }
@@ -72,16 +73,16 @@ public class PatrolState : State
 
     void DetectPlayer()
     {
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        Vector3 directionToPlayer = (player.position - AI.transform.position).normalized;
+        float distanceToPlayer = Vector3.Distance(AI.transform.position, player.position);
 
         if (distanceToPlayer < detectionDistance)
         {
-            float angle = Vector3.Angle(transform.forward, directionToPlayer);
+            float angle = Vector3.Angle(AI.transform.forward, directionToPlayer);
             if (angle < viewAngle / 2f)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, directionToPlayer, out hit, detectionDistance))
+                if (Physics.Raycast(AI.transform.position, directionToPlayer, out hit, detectionDistance))
                 {
                     if (hit.transform == player)
                     {
@@ -98,12 +99,12 @@ public class PatrolState : State
 
     void MoveTowardsTarget()
     {
-        Vector3 direction = (targetPosition - transform.position).normalized;
+        Vector3 direction = (targetPosition - AI.transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        AI.transform.rotation = Quaternion.Slerp(AI.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
         // Move towards the target position
-        transform.position += transform.forward * speed * Time.deltaTime;
+        AI.transform.position += AI.transform.forward * speed * Time.deltaTime;
     }
 
     void SelectNextWaypoint()
