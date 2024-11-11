@@ -42,4 +42,11 @@ public class AIController : MonoBehaviour
     public static float speed() {
         return projectileSpeed;
     }
+    public void Die(float damage)
+    {
+        if (health <= 0)
+        {
+            Destroy(gameObject);  // Destroy the AI when health reaches 0
+        }
+    }
 }
