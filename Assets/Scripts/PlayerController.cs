@@ -146,6 +146,9 @@ public class PlayerController : MonoBehaviour
             jumps = 2;
         }
     }
+    public void dead() {
+        Destroy(gameObject);
+    }
 }
 /*
 using UnityEngine;

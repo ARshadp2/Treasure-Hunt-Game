@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Start() {
         original = health;
+        
     }
     public void TakeDamage(float damage)
     {
@@ -17,6 +18,8 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log(health);
         if (health <= 0)
         {
+            PlayerController player = FindObjectOfType<PlayerController>();
+            player.dead();
             Debug.Log("Player has died!");
             // Implement player death logic, like restarting the game or showing a game over screen.
         }
