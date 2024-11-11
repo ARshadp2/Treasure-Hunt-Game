@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+
 public class PlayerController : MonoBehaviour
 {
     private float max_vel = 10;
@@ -148,6 +150,7 @@ public class PlayerController : MonoBehaviour
     }
     public void dead() {
         Destroy(gameObject);
+        SceneManager.LoadScene(3);
     }
 }
 /*
