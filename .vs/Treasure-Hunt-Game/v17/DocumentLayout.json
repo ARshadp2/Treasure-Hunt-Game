@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{AF2BBF7C-ED19-75DA-EF6B-B4B9A85D3BF0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gameoverscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AF2BBF7C-ED19-75DA-EF6B-B4B9A85D3BF0}|Assembly-CSharp.csproj|c:\\users\\diepc\\onedrive\\documents\\github\\treasure-hunt-game\\assets\\scripts\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{AF2BBF7C-ED19-75DA-EF6B-B4B9A85D3BF0}|Assembly-CSharp.csproj|C:\\Users\\diepc\\OneDrive\\Documents\\GitHub\\Treasure-Hunt-Game\\assets\\scripts\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AF2BBF7C-ED19-75DA-EF6B-B4B9A85D3BF0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -30,8 +30,7 @@
               "RelativeToolTip": "Assets\\Scripts\\ScoreManager.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAAwBcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-11T20:34:32.422Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-11T20:34:32.422Z"
             },
             {
               "$type": "Document",
@@ -41,7 +40,7 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\GameOverScreen.cs",
               "ToolTip": "C:\\Users\\diepc\\OneDrive\\Documents\\GitHub\\Treasure-Hunt-Game\\Assets\\Scripts\\GameOverScreen.cs",
               "RelativeToolTip": "Assets\\Scripts\\GameOverScreen.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-11T20:20:56.084Z",
               "EditorCaption": ""
