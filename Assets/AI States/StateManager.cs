@@ -2,13 +2,16 @@ using UnityEngine;
 public class StateManager : MonoBehaviour
 {
     public State currentState;
-    public PatrolState patrolState; 
+    public PatrolState patrolState;
+    public ChaseState chaseState;
+    public AttackState attackState;
+    public RunState runState;
 
     void Start()
     {
         if (currentState == null)
         {
-            currentState = patrolState;
+            currentState = patrolState;  // Set initial state to patrol
         }
     }
 
@@ -24,7 +27,7 @@ public class StateManager : MonoBehaviour
             State nextState = currentState.RunCurrentState();
             if (nextState != currentState)
             {
-                currentState = nextState;
+                currentState = nextState;  // Transition to next state
             }
         }
     }

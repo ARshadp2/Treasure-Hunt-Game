@@ -5,33 +5,43 @@ using UnityEngine;
 public class PatrolState : State
 {
     public ChaseState chaseState;
-    public Transform player; // Reference to the player
+    public Transform player;
     public GameObject AI;
     public List<Transform> waypoints;
     public float speed = 2f;
-    public float detectionDistance = 10f; 
+    public float detectionDistance = 5f;
     public float rotationSpeed = 2f;
     public float viewAngle = 45f;
 
     private int currentWaypoint = 0;
     private Vector3 targetPosition;
-    private bool seePlayer = false; // Track if the player is detected
+    public bool seePlayer = false;
 
-    public override State RunCurrentState()
+  public override State RunCurrentState()
     {
-        DetectPlayer();
+        if (player == null || AI == null)
+        {
+            Debug.LogError("Player or AI GameObject is not assigned!");
+            return this; 
+        }
+
+        seePlayer = DetectPlayer(); 
 
         if (seePlayer)
         {
             Debug.Log("Player detected, switching to ChaseState.");
-            return chaseState; 
+            return chaseState;
         }
         else
         {
-            Patrol();
-            return this; 
+            Patrol();  
+            return this;  
         }
     }
+
+
+
+
 
     private void Start()
     {
@@ -50,52 +60,38 @@ public class PatrolState : State
     {
         MoveTowardsTarget();
 
-        // Raycast to detect walls or obstacles
-        RaycastHit hit;
-        Vector3 forward = AI.transform.TransformDirection(Vector3.forward);
-        if (Physics.Raycast(AI.transform.position, forward, out hit, detectionDistance))
-        {
-            if (hit.collider.CompareTag("Wall"))
-            {
-                SelectNewWaypoint();
-            }
-        }
-
-        // Debug log to track the AI's patrol progress
-        Debug.Log($"Current Position: {AI.transform.position}, Target Position: {targetPosition}");
-
-        // If the AI reaches the current waypoint, select the next one
         if (Vector3.Distance(AI.transform.position, targetPosition) < 0.5f)
         {
             SelectNextWaypoint();
         }
     }
 
-    void DetectPlayer()
-    {
-        Vector3 directionToPlayer = (player.position - AI.transform.position).normalized;
-        float distanceToPlayer = Vector3.Distance(AI.transform.position, player.position);
+    bool DetectPlayer()
+{
+    Vector3 directionToPlayer = (player.position - AI.transform.position).normalized;
+    float distanceToPlayer = Vector3.Distance(AI.transform.position, player.position);
 
-        if (distanceToPlayer < detectionDistance)
+    if (distanceToPlayer <= detectionDistance)
+    {
+        float angle = Vector3.Angle(AI.transform.forward, directionToPlayer);
+        if (angle < viewAngle / 2f)
         {
-            float angle = Vector3.Angle(AI.transform.forward, directionToPlayer);
-            if (angle < viewAngle / 2f)
+            RaycastHit hit;
+            if (Physics.Raycast(AI.transform.position, directionToPlayer, out hit, detectionDistance))
             {
-                RaycastHit hit;
-                if (Physics.Raycast(AI.transform.position, directionToPlayer, out hit, detectionDistance))
+                if (hit.transform == player)
                 {
-                    if (hit.transform == player)
-                    {
-                        seePlayer = true;
-                        Debug.Log("Player detected!");
-                        return;
-                    }
+                    Debug.Log("Player detected!");
+                    return true;
                 }
             }
         }
-        seePlayer = false;
-        Debug.Log("Player not detected.");
     }
+
+    Debug.Log("Player not detected.");
+    return false;
+}
+
 
     void MoveTowardsTarget()
     {
@@ -103,7 +99,6 @@ public class PatrolState : State
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         AI.transform.rotation = Quaternion.Slerp(AI.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
-        // Move towards the target position
         AI.transform.position += AI.transform.forward * speed * Time.deltaTime;
     }
 
@@ -114,23 +109,5 @@ public class PatrolState : State
 
         currentWaypoint = (currentWaypoint + 1) % waypoints.Count;
         targetPosition = waypoints[currentWaypoint].position;
-
-        Debug.Log("Next waypoint selected: " + targetPosition);
-    }
-
-    void SelectNewWaypoint()
-    {
-        if (waypoints.Count == 0)
-            return;
-
-        int newWaypoint = currentWaypoint;
-        while (newWaypoint == currentWaypoint)
-        {
-            newWaypoint = Random.Range(0, waypoints.Count);
-        }
-        currentWaypoint = newWaypoint;
-        targetPosition = waypoints[currentWaypoint].position;
-
-        Debug.Log("New waypoint selected: " + targetPosition);
     }
 }

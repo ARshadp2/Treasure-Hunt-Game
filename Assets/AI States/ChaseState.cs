@@ -1,42 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine;  
 
 public class ChaseState : State
 {
+    public PatrolState patrolState;
     public AttackState attackState;
-    public GameObject player;
+    public GameObject player;  
+    public GameObject AI;      
     public float chaseRange = 5f;
     public float speed = 10f;
 
     public override State RunCurrentState()
     {
-        Debug.Log("In ChaseState");
+        
+        if (!patrolState.seePlayer)
+        {
+            Debug.Log("Lost sight of player, switching to PatrolState.");
+            return patrolState;  
+        }
 
+        
         if (IsInRange())
         {
-            Debug.Log("Attacking player!");
+            Debug.Log("Player in attack range, switching to AttackState.");
             return attackState;
         }
-        else
-        {
-            MoveTowardsPlayer();
-            return this;
-        }
+
+        
+        MoveTowardsPlayer();
+        return this;
     }
 
-    public bool IsInRange()
+
+    bool IsInRange()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        return distanceToPlayer <= chaseRange;
+        float distanceToPlayer = Vector3.Distance(AI.transform.position, player.transform.position);
+        return distanceToPlayer < chaseRange;
     }
 
     void MoveTowardsPlayer()
     {
-        Vector3 direction = (player.transform.position - transform.position).normalized;
-        transform.position += direction * speed * Time.deltaTime;
-
-        // Debugging: Print the direction towards the player
-        Debug.Log("Moving towards player: " + player.transform.position);
+        Vector3 direction = (player.transform.position - AI.transform.position).normalized;
+        AI.transform.position += direction * speed * Time.deltaTime;
+        AI.transform.LookAt(player.transform.position);
     }
 }
