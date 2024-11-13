@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\Pursue.cs" />
     <Compile Include="Assets\AI States\StateManager.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\AI States\FSM.cs" />
     <Compile Include="Assets\Scripts\Instructions Menu.cs" />
   </ItemGroup>
   <ItemGroup>
