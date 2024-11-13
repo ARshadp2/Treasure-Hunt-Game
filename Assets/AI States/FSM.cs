@@ -17,7 +17,6 @@ public class FSM : MonoBehaviour
     private float lowHealthThreshold = 3f; // Threshold for fleeing
     private float attackCooldown = 1f;
     private float lastAttackTime = 0f;
-    private AudioSource audio;
 
 
     // Chase settings
@@ -37,7 +36,6 @@ public class FSM : MonoBehaviour
     {
         currentState = State.Patrol; // Start in patrol mode
         SelectNextWaypoint();
-        audio = FindObjectOfType<AudioSource>();
     }
 
     void Update()
@@ -190,7 +188,6 @@ public class FSM : MonoBehaviour
                 Quaternion rotation = Quaternion.LookRotation(direction);
                 projectile.transform.rotation = rotation;
 
-                audio.Play();
                 rb.velocity = direction * projectileSpeed;
 
             

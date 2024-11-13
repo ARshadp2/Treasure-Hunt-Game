@@ -10,15 +10,15 @@ public class Treasure : MonoBehaviour
     {
         if (other.name == "Player")
         {
-            audio.Play();
             ScoreManager scoreManager = FindObjectOfType<ScoreManager>(); // Find the GameManager
             if (scoreManager != null)
             {
                 scoreManager.AddScore(1); // Add points to the score
                 scoreManager.getScore();
             }
-
             Destroy(gameObject); // Remove the treasure
+            if (audio != null)
+                audio.Play();
         }
     }
 }
