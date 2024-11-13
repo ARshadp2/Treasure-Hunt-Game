@@ -8,26 +8,26 @@ public class FSM : MonoBehaviour
     private enum State { Patrol, Chase, Attack, Flee }
     private State currentState;
     // Attack settings
-    public float attackRange = 5f;
+    private float attackRange = 10f;
     public Transform player;
     public GameObject projectilePrefab;
-    public float projectileSpeed = 10f;
-    public float damage = 1f;
+    private float projectileSpeed = 15f;
+    private float damage = 1f;
     private float health = 10f;
-    public float lowHealthThreshold = 3f; // Threshold for fleeing
-    public float attackCooldown = 2f;
+    private float lowHealthThreshold = 3f; // Threshold for fleeing
+    private float attackCooldown = 1f;
     private float lastAttackTime = 0f;
-
+    private AudioSource audio;
 
 
     // Chase settings
-    public float chaseRange = 10f;
-    public float speed = 3f;
+    private float chaseRange = 40f;
+    private float speed = 10f;
 
     // Patrol settings
     public List<Transform> waypoints;
-    public float detectionDistance = 2f;
-    public float rotationSpeed = 2f;
+    private float detectionDistance = 40f;
+    private float rotationSpeed = 20f;
 
     private int currentWaypoint = 0;
     private Vector3 targetPosition;
@@ -37,11 +37,15 @@ public class FSM : MonoBehaviour
     {
         currentState = State.Patrol; // Start in patrol mode
         SelectNextWaypoint();
+        audio = FindObjectOfType<AudioSource>();
     }
 
     void Update()
     {
-
+        if (transform.rotation.x >= 180 || transform.position.x <= -180)
+            transform.rotation = Quaternion.Euler(0, transform.rotation.y, transform.rotation.z);
+        if (transform.rotation.z >= 180 || transform.position.z <= -180)
+            transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0);
         if (tempHealth.health <= lowHealthThreshold && currentState != State.Flee)
             {
                 currentState = State.Flee;
@@ -186,7 +190,7 @@ public class FSM : MonoBehaviour
                 Quaternion rotation = Quaternion.LookRotation(direction);
                 projectile.transform.rotation = rotation;
 
-            
+                audio.Play();
                 rb.velocity = direction * projectileSpeed;
 
             

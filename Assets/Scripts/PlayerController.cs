@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip jump1;
     public AudioClip jump2;
     public AudioClip walk;
+    public AudioClip pew;
     public AudioSource audio;
 
     public float jumpHeight = 10.0f;
@@ -70,7 +71,8 @@ public class PlayerController : MonoBehaviour
         float input_horizontal = 0;
         float input_vertical = 0;
         float input_rot;
-        
+        if (transform.position.y <= -100)
+            dead();
         if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)))
             input_vertical = 0;
         else if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
@@ -136,6 +138,7 @@ public class PlayerController : MonoBehaviour
         if ((Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Z)) && Time.time - saved_time_launch >= launch_gap) {
             saved_time_launch = Time.time;
             GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
+            audio.PlayOneShot(pew, .7f);
         }
         if (vel_y.y < -.1)
             standing_check = false;

@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class Treasure : MonoBehaviour
 {
+    private AudioSource audio;
+    void Start() {
+        audio = FindObjectOfType<AudioSource>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.name == "Player")
         {
+            audio.Play();
             ScoreManager scoreManager = FindObjectOfType<ScoreManager>(); // Find the GameManager
             if (scoreManager != null)
             {

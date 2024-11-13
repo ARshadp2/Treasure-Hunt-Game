@@ -106,7 +106,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.55
+  m_Radius: 0.4
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &912302860086452158
 MonoBehaviour:
@@ -155,9 +155,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8789504179319123484}
     m_Modifications:
+    - target: {fileID: 875728469747762566, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4c304c897435665468aaf1ac317d07db, type: 2}
+    - target: {fileID: 2499638419423866164, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4c304c897435665468aaf1ac317d07db, type: 2}
+    - target: {fileID: 4479664120615527965, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 4479664120615527965, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.7
       objectReference: {fileID: 0}
     - target: {fileID: 4479664120615527965, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -165,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4479664120615527965, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.85
+      value: 10.9
       objectReference: {fileID: 0}
     - target: {fileID: 4479664120615527965, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -199,6 +211,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: burrito (2 side)
       objectReference: {fileID: 0}
+    - target: {fileID: 8477529274437057994, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4c304c897435665468aaf1ac317d07db, type: 2}
     m_RemovedComponents:
     - {fileID: 7718279047157143966, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
     - {fileID: 7109335578744489097, guid: d7ac176a706fae749b4008679a9eff9c, type: 3}
