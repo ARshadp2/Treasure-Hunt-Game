@@ -10,6 +10,7 @@ public class AttackState : State
     public float attackRange = 5f;
     private float noAttackRange = 2f;
     public Transform player;
+    public GameObject AI;
     public GameObject projectilePrefab;
     public static float projectileSpeed = 10f;
     public float damage = 1f;
@@ -32,22 +33,28 @@ public class AttackState : State
 
     void Attack()
     {
-        transform.LookAt(player); 
+        AI.transform.LookAt(player);
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(AI.transform.position, player.position);
+        Debug.Log("Distance to player: " + distanceToPlayer);
+
         if (distanceToPlayer < attackRange && distanceToPlayer > noAttackRange)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, (player.position - transform.position).normalized, out hit, attackRange))
+            Vector3 direction = (player.position - AI.transform.position).normalized;
+
+            if (Physics.Raycast(AI.transform.position, direction, out hit, attackRange))
             {
                 if (hit.transform == player && count < maxProjectiles)
                 {
+                    Debug.Log("Attacking player!");
                     count++;
-                    AttackPlayer(); 
+                    AttackPlayer();
                 }
             }
         }
     }
+
 
     void AttackPlayer()
     {
