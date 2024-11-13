@@ -14,12 +14,17 @@ public class TempHealth : MonoBehaviour
         healthBar.maxValue = health;
         healthBar.value = health;
     }
-    public void hit() {
-        health--;
-        healthBar.value = health;
-        if (health <= 0)
-        {
-            Destroy(AI);  // Destroy the AI when health reaches 0
-        }
+    public void hit()
+{
+    health--;
+    healthBar.value = health;
+
+    Debug.Log("AI health: " + health);
+
+    if (health <= 0)
+    {
+        Destroy(AI);  
     }
+}
+
 }

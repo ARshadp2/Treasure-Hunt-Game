@@ -7,7 +7,6 @@ public class FSM : MonoBehaviour
     // State definitions
     private enum State { Patrol, Chase, Attack, Flee }
     private State currentState;
-
     // Attack settings
     public float attackRange = 5f;
     public Transform player;
@@ -33,6 +32,7 @@ public class FSM : MonoBehaviour
     private int currentWaypoint = 0;
     private Vector3 targetPosition;
 
+    public TempHealth tempHealth;
     void Start()
     {
         currentState = State.Patrol; // Start in patrol mode
@@ -41,6 +41,14 @@ public class FSM : MonoBehaviour
 
     void Update()
     {
+
+        if (tempHealth.health <= lowHealthThreshold && currentState != State.Flee)
+            {
+                currentState = State.Flee;
+            }
+
+
+
         switch (currentState)
         {
             case State.Patrol:
@@ -56,26 +64,29 @@ public class FSM : MonoBehaviour
                 Flee();
                 break;
         }
-
-        // Check health to switch to Flee if low
-        if (health < lowHealthThreshold && currentState != State.Flee)
-        {
-            currentState = State.Flee;
-        }
     }
+
+
+
 
     // Patrol behavior
     void Patrol()
     {
+        if (health < lowHealthThreshold)
+        {
+            currentState = State.Flee; // Transition to flee if health is low
+            return;
+        }
+
         MoveTowardsTarget();
 
-        // If close to the waypoint, select the next one
+    
         if (Vector3.Distance(transform.position, targetPosition) < detectionDistance)
         {
             SelectNextWaypoint();
         }
 
-        // Transition to Chase if player is within chase range
+
         if (Vector3.Distance(transform.position, player.position) <= chaseRange)
         {
             currentState = State.Chase;
@@ -85,16 +96,19 @@ public class FSM : MonoBehaviour
     // Chase behavior
     void Chase()
     {
+        if (health < lowHealthThreshold)
+        {
+            currentState = State.Flee; // Transition to flee if health is low
+            return;
+        }
+
         if (player != null)
         {
             Vector3 directionToPlayer = (player.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
-            // Move towards the player’s position
             transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
-
-            // Check distance to switch to attack or patrol
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
             if (distanceToPlayer <= attackRange)
             {
@@ -111,14 +125,18 @@ public class FSM : MonoBehaviour
     // Attack behavior
     void Attack()
     {
-        // Check cooldown to avoid firing every frame
+        if (health < lowHealthThreshold)
+        {
+            currentState = State.Flee; // Transition to flee if health is low
+            return;
+        }
+
         if (Time.time >= lastAttackTime + attackCooldown)
         {
             AttackPlayer();
             lastAttackTime = Time.time;
         }
 
-        // State transitions
         if (Vector3.Distance(transform.position, player.position) > attackRange && Vector3.Distance(transform.position, player.position) <= chaseRange)
         {
             currentState = State.Chase;
@@ -131,54 +149,57 @@ public class FSM : MonoBehaviour
     }
 
 
-    // Flee behavior
-    void Flee()
+    //Flee
+   void Flee()
     {
-        MoveAwayFromPlayer();
+        Debug.Log("AI is in Flee state");
 
-        // Return to patrol if far enough from the player and health is safe
-        if (Vector3.Distance(transform.position, player.position) > chaseRange && health >= lowHealthThreshold)
+        MoveAwayFromPlayer();
+        
+        if (health >= lowHealthThreshold && Vector3.Distance(transform.position, player.position) > chaseRange)
         {
             currentState = State.Patrol;
             SelectNextWaypoint();
         }
     }
 
+
+
    void AttackPlayer()
-{
-    if (projectilePrefab != null)
     {
-        // Instantiate projectile at AI's position
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-
-        if (rb != null)
+        if (projectilePrefab != null)
         {
-            // Make sure it's non-kinematic
-            rb.isKinematic = false;
+            // Instantiate projectile at AI's position
+            GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
-            // Calculate direction towards the player
-            Vector3 direction = (player.position - transform.position).normalized;
+            Rigidbody rb = projectile.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
             
-            // Set the projectile's rotation to face the player
-            Quaternion rotation = Quaternion.LookRotation(direction);
-            projectile.transform.rotation = rotation;
+                rb.isKinematic = false;
 
-            // Apply velocity in the direction towards the player
-            rb.velocity = direction * projectileSpeed;
+                
+                Vector3 direction = (player.position - transform.position).normalized;
+                
+            
+                Quaternion rotation = Quaternion.LookRotation(direction);
+                projectile.transform.rotation = rotation;
 
-            // Debugging projectile spawn and movement
-            Debug.Log("Projectile spawned at: " + projectile.transform.position);
+            
+                rb.velocity = direction * projectileSpeed;
+
+            
+                Debug.Log("Projectile spawned at: " + projectile.transform.position);
+            }
+
+            Destroy(projectile, 2f); // Destroy after 2 seconds
         }
-
-        Destroy(projectile, 2f); // Destroy after 2 seconds
+        else
+        {
+            Debug.LogWarning("Projectile prefab not assigned.");
+        }
     }
-    else
-    {
-        Debug.LogWarning("Projectile prefab not assigned.");
-    }
-}
 
 
 
@@ -207,14 +228,16 @@ public class FSM : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
         transform.position += transform.forward * speed * Time.deltaTime;
+
+        Debug.Log("Moving away from player");
     }
 
-    // Optional: Visualize Raycast in the Scene view
+   
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange); // Visualize attack range
+        Gizmos.DrawWireSphere(transform.position, attackRange); 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, chaseRange);  // Visualize chase range
+        Gizmos.DrawWireSphere(transform.position, chaseRange);  
     }
 }

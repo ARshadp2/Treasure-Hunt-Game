@@ -6,8 +6,8 @@ using TMPro;
 using UnityEngine.SceneManagement;
 
 public class TimerScript: MonoBehaviour {
-    private int textTime = 5;
-    private int actualTime = 5;
+    private int textTime = 75;
+    private int actualTime = 75;
     public TMP_Text timer; 
 
     void Start() {
