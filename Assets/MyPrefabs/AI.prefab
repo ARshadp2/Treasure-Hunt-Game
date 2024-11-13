@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 5585432784424898385}
   - component: {fileID: 212318016982011328}
   - component: {fileID: 6627489624937759642}
-  - component: {fileID: 4544882750818598439}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -185,23 +184,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4544882750818598439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2260819095043837537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea9557800229a354db93a06dc51d632a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: {fileID: 5107755672616090233}
-  patrolState: {fileID: 5107755672616090233}
-  chaseState: {fileID: 6317152967724474858}
-  attackState: {fileID: 5314491224355447361}
-  runState: {fileID: 1686669228688320346}
 --- !u!1 &2534644867919484344
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +337,7 @@ MonoBehaviour:
   AI: {fileID: 2260819095043837537}
   projectilePrefab: {fileID: 0}
   damage: 1
+  attackCooldown: 1
   chaseState: {fileID: 6317152967724474858}
 --- !u!1 &3593211547118191422
 GameObject:

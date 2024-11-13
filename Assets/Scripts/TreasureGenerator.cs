@@ -7,8 +7,8 @@ using UnityEngine;
 public class TreasureGenerator : MonoBehaviour
 {
     public GameObject treasure;
-    public GameObject[,] treasures = new GameObject[15,1];
-    public float[] ys = new float[15];
+    public GameObject[,] treasures = new GameObject[10,1];
+    public float[] ys = new float[10];
     public float xz = 50;
     public float height = 30;
     private bool goodheight = false;
@@ -16,7 +16,7 @@ public class TreasureGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int x = 0; x < 15; x+=1) {
+        for (int x = 0; x < 10; x++) {
             goodheight = false;
             Vector3 spawn = new Vector3(0,0,10);
             while (goodheight == false) {

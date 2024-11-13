@@ -7,28 +7,31 @@ using UnityEngine.SceneManagement;
 
 public class TimerScript: MonoBehaviour {
 
-    public int targetTime = 18000;
-    public TMP_Text timer;
-    public 
+    private int textTime = 75;
+    private int actualTime = 75;
+    public TMP_Text timer; 
 
     void Start() {
         UpdateTimer();
     }
 
     void Update(){
-
-        targetTime -= 1;
+        textTime = actualTime - (int) Time.time;
         UpdateTimer();
 
-        if (targetTime <= 0)
+        if (actualTime <= 0)
         {
             timerEnded();
-
         }
 
     }
     void UpdateTimer() {
-        timer.SetText("Time Left: " + targetTime);
+        string seconds;
+        if (textTime % 60 < 10)
+            seconds = "0" + textTime % 60;
+        else
+            seconds = textTime % 60 + "";
+        timer.SetText("Time Left: " + textTime / 60 + ":" + seconds);
     }
 
     void timerEnded()

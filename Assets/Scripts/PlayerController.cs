@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private float walk_gap = .5f;
     private float saved_time_walk = 0;
     
+    private float launch_gap = .5f;
+    private float saved_time_launch = 0;
 
     private float velocity_rot;
     private float acceleration_rot;
@@ -131,7 +133,8 @@ public class PlayerController : MonoBehaviour
             jumps -= 1;
             vel_y.y = Mathf.Sqrt(-jumpHeight * gravity);
         }
-        if (Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Z)) {
+        if ((Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.Z)) && Time.time - saved_time_launch >= launch_gap) {
+            saved_time_launch = Time.time;
             GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
         }
         if (vel_y.y < -.1)

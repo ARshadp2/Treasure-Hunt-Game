@@ -13,9 +13,17 @@ public class PlayerProjectile : MonoBehaviour
 
     void Update()
     {
-        transform.position += transform.forward * 10 * Time.deltaTime;
+        transform.position += transform.forward * 30 * Time.deltaTime;
         if (Time.time - start >= 1) {
             Destroy(gameObject);
+        }
+    }
+    void OnTriggerEnter(Collider other) {
+        if (other.tag == "AI") {
+            Destroy(gameObject);
+            TempHealth health = other.GetComponent<TempHealth>();
+            if (health != null)
+                health.hit();
         }
     }
 }
